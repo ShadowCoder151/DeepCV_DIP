@@ -10,5 +10,5 @@ class GSThread(QThread):
         self.image_path = image_path
 
     def run(self):
-        gray_img = self.convert_grayscale(self.image_path)
+        gray_img = convert_grayscale(self.image_path)
         self.img_used.emit(gray_img)
