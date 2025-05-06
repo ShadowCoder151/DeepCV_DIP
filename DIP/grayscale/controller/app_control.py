@@ -15,6 +15,9 @@ class AppController:
         if self.image_path:
             self.og_img = cv2.imread(self.image_path)
             self.show_image(self.og_img, self.ui.image_label)
+            self.ui.gray_label.clear()
+            self.ui.gray_label.hide()
+            self.ui.image_label.show()
 
     def show_image(self, img, label):
         img_rgb = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
@@ -26,5 +29,11 @@ class AppController:
     def convert_image(self):
         if self.og_img is not None:
             self.gthread = GSThread(self.og_img)
-            self.gthread.img_used.connect(lambda out_img: self.show_image(out_img, self.ui.gray_label))
+            self.gthread.img_used.connect(lambda out_img: self.update_grayscale_label(out_img))
             self.gthread.start()
+
+            self.ui.image_label.hide()
+            self.ui.gray_label.show()
+
+    def update_grayscale_label(self, out_img):
+        self.show_image(out_img, self.ui.gray_label)
